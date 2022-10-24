@@ -2,7 +2,7 @@
 
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
 
@@ -12,6 +12,7 @@ function App() {
   let [like, setLike] = useState([0,0,0]);
   let [modal, setModal] = useState(false);
   let [inputText,setInputText] = useState(' ');
+  let [date,setDate] = useState(['2월 17일','2월 18일','2월 19일']);
 
   // [1,2,3].map(function(ele){
   //   console.log(ele)
@@ -72,7 +73,7 @@ function App() {
               } }>👍</span> { like[i] }</h4>
               {/* <h4>{ title[i] }</h4> */}
               
-              <p>2월 17일 발행</p>
+              <p>{ date[i] }</p>
               <button onClick={()=>{
                 let titleCopy = [...title];
                 titleCopy.splice(i,1);
@@ -87,10 +88,13 @@ function App() {
       setInputText(e.target.value);  //늦게 처리됨 (비동기 처리)
       console.log(inputText);}} />
     <button onClick={()=>{
+      // let createDate = new Date();
       let titleCopy = [...title];
-      titleCopy.push(inputText);
+      if(inputText==' ') return;
+      titleCopy.unshift(inputText);
       setTitle(titleCopy);
-      like.push(0);
+      like.unshift(0);
+      date.unshift(String(new Date()));
     }}>등록</button>
 
     {/* {
@@ -110,6 +114,8 @@ function App() {
           setTitle(titleCopy);
           } }/> : null
     }
+
+    <Modal2></Modal2>
 
     
     </div>
@@ -143,6 +149,26 @@ function Modal(props){
 //     <div></div>
 //   )
 // }
+
+//클래스를 이용한 컴포넌트 생성 (옛날 문법)
+class Modal2 extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      name : 'kim',
+      age : 20
+    }
+  }
+  render(){
+    return (
+      <div>안녕{this.state.age}
+        <button onClick ={()=>{
+          this.setState({age:21})
+        }}></button>
+      </div>
+    )
+  }
+}
 
 
 export default App;
