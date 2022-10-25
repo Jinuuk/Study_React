@@ -5,6 +5,16 @@
   background-position: center;
 }
 
+.menu {
+ text-decoration: none;
+ color: white;
+ margin: 0 10px;
+}
+
+.menu:hover {
+  color: white;
+}
+
 .App {
   text-align: center;
 }
