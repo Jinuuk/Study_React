@@ -7,11 +7,14 @@ import './App.css';
 import data from './data.js';
 import { Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
 import Detail from './routes/Detail.js';
+import axios from 'axios';
 
 
 function App() {
 
-  let [shoes] = useState(data)
+  let [shoes,setShoes] = useState(data);
+  let [dataNum,setDataNum] = useState(2);
+  let [loading,setLoading] = useState(false);
   let navigate = useNavigate();
 
   return (
@@ -46,6 +49,35 @@ function App() {
             }
             </Row>
           </Container>
+          {
+            loading == true ? <div className="alert alert-warning">로딩중</div> : null
+          }
+          <button onClick={()=>{
+            setLoading(true);
+            if(dataNum > 3){
+              alert('상품이 없습니다.');
+            }else{
+              axios.get('https://codingapple1.github.io/shop/data'+dataNum+'.json')
+                      .then(result=>{
+                        //let shoesCopy = [...shoes, ...reesult.data];
+                        let shoesCopy = [...shoes];
+                        console.log(shoesCopy);
+                        result.data.forEach(ele=>shoesCopy.push(ele));
+                        setShoes(shoesCopy);
+                        setDataNum(dataNum+1);
+                        setLoading(false);
+                      })
+                      .catch(()=>{
+                        console.log('실패');
+                        setLoading(false);
+                      })
+                //동시에 ajax 요청 여러개 하는 방법
+                // Promise.all([axios.get('url1'), axios.get('url2')])
+                //             .then(()=>{
+
+                //             })
+            }
+          }}>버튼</button>
         </>
       }/>
       <Route path="/detail/:id" element={<Detail shoes={shoes}/>}/>
@@ -59,8 +91,6 @@ function App() {
         <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>}/>
         <Route path="two" element={<div>생일기념 쿠폰 받기</div>}/>
       </Route>
-
-
 
       <Route path="*" element={<div>404 없는 페이지</div>}/>
     </Routes>
