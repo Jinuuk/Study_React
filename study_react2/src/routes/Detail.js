@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { Nav } from 'react-bootstrap';
+import {Context1} from './../App.js';
 // import styled from 'styled-components'
 
 // let Btn = styled.button`
@@ -36,15 +38,19 @@ function Detail(props){
                           //어려운 연산
                           //서버에서 데이터를 가져오는 작업
                           //타이머 장착
-    console.log('안녕');
+    // console.log('안녕');
     // setTimeout(()=>{document.getElementsByClassName('alert')[0].style.display = 'none'},2000);
     // setTimeout(()=>{setDisplay('none')},2000)
-    let timer = setTimeout(()=>{setAlert(false)},2000)
+    let timer = setTimeout(()=>{setAlert(false)},2000);
+    let timer2 = setTimeout(()=>{setFade('end')},100);
 
     return()=>{
       //useEffect가 동작되기 전에 실행, mount시 실행안됨, unmount시 실행됨
       //예) 기존 타이머 제거
       clearTimeout(timer);
+
+      setFade('');
+      clearTimeout(timer2);
       //예) 기존 데이터 요청 제거
 
     }
@@ -57,14 +63,20 @@ function Detail(props){
   // let [display,setDisplay] = useState('block');
   let [alert, setAlert] = useState(true);
   let [chkInput, setChkInput] = useState(false);
+  let [tab,setTab] = useState(0);
+  let [fade,setFade] = useState('');
 
   let {id} = useParams();
 
   let foundItem = props.shoes.find(ele => ele.id == id);
   console.log(foundItem);
 
+  let {stock} = useContext(Context1)
+
   return (
-    <div className="container">
+   
+    <div className={`container start ${fade}`}>
+       {/* <div>{stock}</div> */}
       {/* <Box>
       <Btn bg="blue">버튼</Btn>
       </Box> */}
@@ -93,8 +105,52 @@ function Detail(props){
           <button className="btn btn-danger">주문하기</button> 
         </div>
       </div>
+
+      <Nav variant="tabs" defaultActiveKey="link-0">
+      <Nav.Item>
+        <Nav.Link eventKey="link-0" onClick={()=>{setTab(0)}}>tab0</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="link-1" onClick={()=>{setTab(1)}}>tab1</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="link-2" onClick={()=>{setTab(2)}}>tab2</Nav.Link>
+      </Nav.Item>
+    </Nav>
+    <Tabs tab={tab} shoes={props.shoes}/>
+
     </div> 
   )
+}
+
+// function Tabs(props){
+//   if(props.tab == 0){
+//     return <div>내용0</div>;
+//   }else if(props.tab == 1){
+//     return <div>내용1</div>;
+//   }else if(props.tab == 2){
+//     return <div>내용2</div>;
+//   }
+// }
+
+// function Tabs(props){
+//   return [<div>내용0</div>,<div>내용1</div>,<div>내용2</div>][props.tab];
+// }
+
+function Tabs({tab, shoes}){
+  let [fade,setFade] = useState('');
+  let {stock} = useContext(Context1)
+
+  useEffect(()=>{
+    let timer = setTimeout(()=>{setFade('end')},100);
+    return(()=>{
+    setFade('');
+    clearTimeout(timer);
+    })
+  },[tab])
+
+
+  return (<div className={`start ${fade}`}>{[<div>{shoes[0].title}</div>,<div>{stock}</div>,<div>내용2</div>][tab]}</div>)
 }
 
 export default Detail;
