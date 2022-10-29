@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
 import {Context1} from './../App.js';
+import { useSelector, useDispatch } from 'react-redux';
+import {changeCart} from './../store.js'
 // import styled from 'styled-components'
 
 // let Btn = styled.button`
@@ -32,6 +34,8 @@ import {Context1} from './../App.js';
 // }
 
 function Detail(props){
+  let state = useSelector(state=>state)
+  let dispatch = useDispatch();
   // 컴포넌트에 갈고리 다는 법 : 요즘 방식
   useEffect(()=>{ //mount, update시 여기 코드 실행됨
                           //html 렌더링 후에 동작됨
@@ -43,6 +47,7 @@ function Detail(props){
     // setTimeout(()=>{setDisplay('none')},2000)
     let timer = setTimeout(()=>{setAlert(false)},2000);
     let timer2 = setTimeout(()=>{setFade('end')},100);
+
 
     return()=>{
       //useEffect가 동작되기 전에 실행, mount시 실행안됨, unmount시 실행됨
@@ -102,7 +107,7 @@ function Detail(props){
           <h4 className="pt-5">{foundItem.title}</h4>
           <p>{foundItem.content}</p>
           <p>{foundItem.price}</p>
-          <button className="btn btn-danger">주문하기</button> 
+          <button className="btn btn-danger" onClick={()=>(dispatch(changeCart(foundItem)))}>주문하기</button> 
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { Button, Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import './App.css';
 // import breadImage from './bread1.jpg'
@@ -14,6 +14,11 @@ export let Context1 = createContext();
 
 
 function App() {
+
+  useEffect(()=>{
+    localStorage.setItem('watched',JSON.stringify([]));
+  },[])
+  
 
   let [shoes,setShoes] = useState(data);
   let [dataNum,setDataNum] = useState(2);
@@ -112,8 +117,8 @@ function App() {
 
 function Item(props) {
   return(
-    <Col sm>
-    <img src={process.env.PUBLIC_URL + '/bread'+(props.item.id+2)+'.jpg'} width="100%" />
+    <Col sm >
+    <img src={process.env.PUBLIC_URL + '/bread'+(props.item.id+2)+'.jpg'} width="100%"  />
     <h4>{props.item.title}</h4>
     <p>{props.item.price}</p>
   </Col>
