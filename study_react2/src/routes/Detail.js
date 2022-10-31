@@ -48,21 +48,24 @@ function Detail(props){
     let timer = setTimeout(()=>{setAlert(false)},2000);
     let timer2 = setTimeout(()=>{setFade('end')},100);
 
-
     return()=>{
       //useEffect가 동작되기 전에 실행, mount시 실행안됨, unmount시 실행됨
       //예) 기존 타이머 제거
       clearTimeout(timer);
-
       setFade('');
       clearTimeout(timer2);
       //예) 기존 데이터 요청 제거
-
     }
-    
-
 
   }, []) //[]는 seEffect 실행 조건을 넣는 곳, 비워두면 mount에만 실행됨
+
+    useEffect(()=>{
+      let watchedList = JSON.parse(localStorage.getItem('watched'));
+      watchedList.push(foundItem.id);
+      watchedList = new Set(watchedList);
+      watchedList = Array.from(watchedList);
+      localStorage.setItem('watched', JSON.stringify(watchedList));
+    },[])
 
   let [count,setCount] = useState(0)
   // let [display,setDisplay] = useState('block');
