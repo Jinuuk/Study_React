@@ -54,3 +54,14 @@ div {
   text-align: left;
   border-bottom: 1px solid grey;
 }
+
+.modal {
+  width: 95%;
+  border-radius: 5px;
+  margin-top : 20px;
+  margin-left :auto;
+  margin-right: auto;
+  padding : 20px;
+  background-color: #eee;
+  text-align: left;
+}

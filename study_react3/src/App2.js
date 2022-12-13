@@ -4,10 +4,16 @@ import { useState } from 'react';
 
 function App() {
 
+  //class -> className
+
+
+  //데이터 바인딩할 때는 중괄호{} 사용
+  //style = {{스타일명(캐멀 케이스) : '값'}}
+
+  //state : html 자동 재렌더링
   let [postTitle,setPostTitle] = useState(['남자 코트 추천', '남자 하의 추천', '어린이 코트 추천']);
   let [like,setLike] = useState([0,0,0]);
   let [modal,setModal] = useState(false);
-  let [postTitleOrder,setPostTitleOrder] = useState(0);
 
   return (
     <div className="App">
@@ -18,10 +24,7 @@ function App() {
         postTitle.map((data,i)=>{
           return (
             <div className='list' key={i}>
-              <h4 onClick={()=>{
-                setModal(!modal);
-                setPostTitleOrder(i);
-              }}>{ postTitle[i] } <span onClick={()=>{
+              <h4 onClick={()=>{setModal(!modal)}}>{ postTitle[i] } <span onClick={()=>{
                 let copiedLike = [...like];
                 copiedLike[i]++;
                 setLike(copiedLike); 
@@ -33,24 +36,19 @@ function App() {
       }
 
       {
-        modal ? <Modal postTitle={postTitle} postTitleOrder={postTitleOrder} chageTitle = {()=>{
-          let copiedPostTitle = [...postTitle];
-          copiedPostTitle[0] = '여자 코트 추천';
-          setPostTitle(copiedPostTitle);
-        }}/> : null
+        modal ? <Modal/> : null
       }
 
     </div>
   );
 }
 
-function Modal(props){
+function Modal(){
   return (
     <div className='modal'>
-      <h4>{props.postTitle[props.postTitleOrder]}</h4>
+      <h4>제목</h4>
       <p>날짜</p>
-      <p>상세 내용</p>
-      <button onClick={props.chageTitle}>글수정</button>
+      <p>상세내용</p>
     </div>
   )
 }
